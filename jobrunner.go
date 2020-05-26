@@ -1,8 +1,7 @@
 package jobrunner
 
 import (
-	"bytes"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"reflect"
 	"runtime/debug"
 	"sync"
@@ -50,9 +49,7 @@ func (j *Job) Run() {
 	// Don't let the whole process die.
 	defer func() {
 		if err := recover(); err != nil {
-			var buf bytes.Buffer
-			logger := log.New(&buf, "JobRunner Log: ", log.Lshortfile)
-			logger.Panic(err, "\n", string(debug.Stack()))
+			log.Panic(err, "\n", string(debug.Stack()))
 		}
 	}()
 
